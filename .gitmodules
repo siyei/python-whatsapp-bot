@@ -1,0 +1,3 @@
+[submodule "yowsup"]
+	path = yowsup
+	url = git@github.com:tgalal/yowsup.git
