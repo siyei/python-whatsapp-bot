@@ -1,3 +1,4 @@
 [submodule "yowsup"]
 	path = yowsup
-	url = git@github.com:tgalal/yowsup.git
+  url = git@github.com:tgalal/yowsup.git
+  ignore = dirty
