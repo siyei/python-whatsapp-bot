@@ -10,7 +10,7 @@ outboxempty=True
 def message_send(recepient, content):
 	#jid=findjidbynick(recepient)
 	jid=recepient
-	#content=content.encode('utf-8')
+	content=content.encode('utf-8')
 	messageId = bot.methodsInterface.call("message_send",(jid,content))
 	path=os.path.join('logs','outgoing',jid)
 	if not os.path.exists(path):
@@ -41,7 +41,7 @@ def message_queue(recepient, content):
 				recepient,content=x
 				global bot
 				bot.methodsInterface.call("typing_send",(recepient,))
-				time.sleep(1)
+				time.sleep(0.1)
 				message_send(recepient,content)
 		outboxprocessing=False
 		return

@@ -1,1 +1,1 @@
-from . import logger, sender, misctools
+from . import logger, sender, misctools, google, wiki

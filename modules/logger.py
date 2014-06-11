@@ -32,5 +32,6 @@ def onGroupMessageReceived(messageId, jid, msgauthor, messageContent, timestamp,
 
 def setup(super):
 	super.signalsInterface.registerListener("message_received", onMessageReceived)
+	super.signalsInterface.registerListener("group_messageReceived", onGroupMessageReceived)
 	global bot
 	bot=super
