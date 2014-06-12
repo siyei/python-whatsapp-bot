@@ -18,19 +18,20 @@ def logger(messageId, jid, messageContent, timestamp, wantsReceipt, pushName, is
 
 def onMessageReceived(messageId, jid, messageContent, timestamp, wantsReceipt, pushName, isBroadcast):
 	messageobject=messageId,jid, messageContent, timestamp, wantsReceipt, pushName, isBroadcast
-	print messageContent
+	print pushName,':',messageContent
 	#messageContent=messageContent.decode('utf8')
 	logger(*messageobject)
-	modules.sender.message_queue(jid,messageContent)
+	#modules.sender.message_queue(jid,messageContent)
 
 def onGroupMessageReceived(messageId, jid, msgauthor, messageContent, timestamp, wantsReceipt, pushName):
 	messageobject=messageId,jid, msgauthor, messageContent, timestamp, wantsReceipt, pushName
+	print jid,'('+pushName+'): ',messageContent
 	if wantsReceipt and bot.sendReceipts:
 		bot.methodsInterface.call("message_ack", (jid, messageId))
 	logger(*messageobject)
 
-def setup(super):
-	super.signalsInterface.registerListener("message_received", onMessageReceived)
-	super.signalsInterface.registerListener("group_messageReceived", onGroupMessageReceived)
+def setup(parent):
+	parent.signalsInterface.registerListener("message_received", onMessageReceived)
+	parent.signalsInterface.registerListener("group_messageReceived", onGroupMessageReceived)
 	global bot
-	bot=super
+	bot=parent

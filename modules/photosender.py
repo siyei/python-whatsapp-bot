@@ -190,11 +190,11 @@ def photo_queue(recepient,path):
 	outbox.append(newmessage)
 	photo_process()
 
-def setup(super):
-	super.signalsInterface.registerListener("media_uploadRequestSuccess", onmedia_uploadRequestSuccess)
-	super.signalsInterface.registerListener("media_uploadRequestFailed", onmedia_uploadRequestFailed)
-	super.signalsInterface.registerListener("media_uploadRequestDuplicate", onmedia_uploadRequestDuplicate)
-	super.signalsInterface.registerListener("image_received",onImageReceived)
+def setup(parent):
+	parent.signalsInterface.registerListener("media_uploadRequestSuccess", onmedia_uploadRequestSuccess)
+	parent.signalsInterface.registerListener("media_uploadRequestFailed", onmedia_uploadRequestFailed)
+	parent.signalsInterface.registerListener("media_uploadRequestDuplicate", onmedia_uploadRequestDuplicate)
+	parent.signalsInterface.registerListener("image_received",onImageReceived)
 	global path, gotMediaReceipt, done
 	global bot
-	bot=super
+	bot=parent

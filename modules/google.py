@@ -42,8 +42,8 @@ def onGroupMessageReceived(messageId, jid, msgauthor, messageContent, timestamp,
 	if messageContent.lower().startswith("google "):
 		AI(jid,messageContent,pushName,msgauthor)
 
-def setup(super):
-	super.signalsInterface.registerListener("message_received", onMessageReceived)
-	super.signalsInterface.registerListener("group_messageReceived", onGroupMessageReceived)
+def setup(parent):
+	parent.signalsInterface.registerListener("message_received", onMessageReceived)
+	parent.signalsInterface.registerListener("group_messageReceived", onGroupMessageReceived)
 	global bot
-	bot=super
+	bot=parent

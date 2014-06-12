@@ -135,6 +135,8 @@ class Bot:
 		self.signalsInterface = connectionManager.getSignalsInterface()
 		self.methodsInterface = connectionManager.getMethodsInterface()
 		
+		self.signalsInterface.signals.append("command")
+		
 		self.signalsInterface.registerListener("auth_success", self.onAuthSuccess)
 		self.signalsInterface.registerListener("auth_fail", self.onAuthFailed)
 		self.signalsInterface.registerListener("disconnected", self.onDisconnected)
@@ -178,6 +180,7 @@ class Bot:
 
 				
 	def onCommand(self,command):
+		self.signalsInterface.send("command",(command,))
 		pass
 		
 	

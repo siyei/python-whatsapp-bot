@@ -12,6 +12,7 @@ def message_send(recepient, content):
 	jid=recepient
 	content=content.encode('utf-8')
 	messageId = bot.methodsInterface.call("message_send",(jid,content))
+	print "sent %s to %s" % (content,jid)
 	path=os.path.join('logs','outgoing',jid)
 	if not os.path.exists(path):
 		os.makedirs(path)
@@ -20,10 +21,12 @@ def message_send(recepient, content):
 		json.dump((messageId,jid,content,int(time.time())),messagefile)		
 
 def onMessageSent(*args):
+	#print "message sent",args
 	pass
 
 def onMessageDelivered(*args):
 	pass
+	#print "message delivered",args
 
 def message_queue(recepient, content):
 	newmessage=(recepient,content)
@@ -46,8 +49,8 @@ def message_queue(recepient, content):
 		outboxprocessing=False
 		return
 		
-def setup(super):
-	super.signalsInterface.registerListener("receipt_messageSent", onMessageSent)
-	super.signalsInterface.registerListener("receipt_messageDelivered", onMessageDelivered)
+def setup(parent):
+	parent.signalsInterface.registerListener("receipt_messageSent", onMessageSent)
+	parent.signalsInterface.registerListener("receipt_messageDelivered", onMessageDelivered)
 	global bot
-	bot=super
+	bot=parent
