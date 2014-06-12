@@ -21,7 +21,6 @@ def onMessageReceived(messageId, jid, messageContent, timestamp, wantsReceipt, p
 	print messageContent
 	#messageContent=messageContent.decode('utf8')
 	logger(*messageobject)
-	#methodsInterface.call("message_send",(jid,messageContent))
 	modules.sender.message_queue(jid,messageContent)
 
 def onGroupMessageReceived(messageId, jid, msgauthor, messageContent, timestamp, wantsReceipt, pushName):

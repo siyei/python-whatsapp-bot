@@ -126,6 +126,12 @@ class Bot:
 		connectionManager = YowsupConnectionManager()
 		connectionManager.setAutoPong(keepAlive)
 		
+		dirs=["downloads","logs","modules","configs"]
+		for folder in dirs:
+			if not os.path.isdir(folder):
+				print "missing directory %s. Creating it." % folder
+				modules.misctools.mkdir_p(folder)
+		
 		self.signalsInterface = connectionManager.getSignalsInterface()
 		self.methodsInterface = connectionManager.getMethodsInterface()
 		
