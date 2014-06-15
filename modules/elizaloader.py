@@ -2,12 +2,14 @@ bot=None
 
 import modules
 import modules.eliza as eliza
-import os
+import os,time
 from BeautifulSoup import BeautifulSoup
 from modules.chatterbotapi import ChatterBotFactory, ChatterBotType
 factory = ChatterBotFactory()
 bot1 = factory.create(ChatterBotType.PANDORABOTS, 'b0dafd24ee35a477')
-bot1session = bot1.create_session()
+#bot1session = bot1.create_session()
+
+botsessions={}
 
 #bot2 = factory.create(ChatterBotType.PANDORABOTS, 'b0dafd24ee35a477')
 #bot2session = bot2.create_session()
@@ -19,14 +21,18 @@ bot1session = bot1.create_session()
 disturbon=[]
 
 def AI(jid,query,querer,group):
-	taken=["wiki","google","image"]
+	taken=["wiki","google","image","auth code"]
 	for x in taken:
 		if query.lower().startswith(x):
 			return
 	#global therapist
 	#reply = therapist.respond(query)
-	global bot1session
-	reply = bot1session.think(query)
+	global botsessions
+	global bot1
+	if jid not in botsessions:
+		botsessions[jid]=bot1.create_session()
+	reply = botsessions[jid].think(query)
+	
 	VALID_TAGS = ['br']
     	soup = BeautifulSoup(reply)
 
@@ -44,7 +50,11 @@ def AI(jid,query,querer,group):
 		modules.sender.message_queue(jid,reply)
 
 def onMessageReceived(messageId, jid, messageContent, timestamp, wantsReceipt, pushName, isBroadcast):
-	AI(jid,messageContent,pushName,None)
+	global bot
+	time.sleep(0.5)
+	clientinfo=bot.clientsinfo[jid]
+	if clientinfo['okaytotalk']:
+		AI(jid,messageContent,pushName,None)
 
 def writedisturb():
 	global disturbon
@@ -58,22 +68,26 @@ def writedisturb():
 		
 
 def onGroupMessageReceived(messageId, jid, msgauthor, messageContent, timestamp, wantsReceipt, pushName):
-	global disturbon
-	if messageContent.lower().strip()=="shut up":
-		print "bot shutting up" 
-		leave='FINE! just ask me to "talk" if you are feeling lonely'
-		modules.sender.message_queue(jid,leave)
-		print disturbon
-		disturbon=filter(lambda a: a != jid, disturbon)
-		print disturbon
-		writedisturb()
-	elif jid in disturbon:
-		AI(jid,messageContent,pushName,msgauthor)
-	elif messageContent.lower().strip()=="talk":
-		disturbon.append(jid)
-		intro='okay! I will start talking. tell me to "shut up" if i am obnoxious'
-		modules.sender.message_queue(jid,intro)
-		writedisturb()
+	global bot
+	time.sleep(0.5)
+	clientinfo=bot.clientsinfo[jid]
+	if clientinfo['okaytotalk']:
+		global disturbon
+		if messageContent.lower().strip()=="shut up":
+			print "bot shutting up" 
+			leave='FINE! just ask me to "talk" if you are feeling lonely'
+			modules.sender.message_queue(jid,leave)
+			print disturbon
+			disturbon=filter(lambda a: a != jid, disturbon)
+			print disturbon
+			writedisturb()
+		elif jid in disturbon:
+			AI(jid,messageContent,pushName,msgauthor)
+		elif messageContent.lower().strip()=="talk":
+			disturbon.append(jid)
+			intro='Okay! I will start talking. tell me to "shut up" if i am obnoxious unless you are %s' % pushName
+			modules.sender.message_queue(jid,intro)
+			writedisturb()
 	
 
 def setup(parent):

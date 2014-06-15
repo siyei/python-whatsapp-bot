@@ -4,8 +4,9 @@ import urllib
 import cStringIO
 import json as m_json
 import modules
-import Image
+from PIL import Image
 import os
+import time
 
 bot=None
 
@@ -34,12 +35,16 @@ def google(terms): # !google <search term>
 	
 	
 def AI(jid,query,querer,group):
-	query=query[len("image "):]
-	result=google(query)
-	if result:
-		modules.photosender.photo_queue(jid,result)
-	else:
-		modules.sender.message_queue(jid,"unable to fetch that")
+	time.sleep(0.2)
+	global bot
+	clientinfo=bot.clientsinfo[jid]
+	if clientinfo['okaytotalk']:
+		query=query[len("image "):]
+		result=google(query)
+		if result:
+			modules.photosender.photo_queue(jid,result)
+		else:
+			modules.sender.message_queue(jid,"unable to fetch that")
 
 def onMessageReceived(messageId, jid, messageContent, timestamp, wantsReceipt, pushName, isBroadcast):
 	if messageContent.lower().startswith("image "):

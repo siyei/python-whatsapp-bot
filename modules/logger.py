@@ -1,6 +1,7 @@
 import os, errno, json
 import modules
 from modules.misctools import mkdir_p
+import datetime
 
 bot=None
         
@@ -18,14 +19,16 @@ def logger(messageId, jid, messageContent, timestamp, wantsReceipt, pushName, is
 
 def onMessageReceived(messageId, jid, messageContent, timestamp, wantsReceipt, pushName, isBroadcast):
 	messageobject=messageId,jid, messageContent, timestamp, wantsReceipt, pushName, isBroadcast
-	print pushName,':',messageContent
+	formattedDate = datetime.datetime.fromtimestamp(timestamp).strftime('%d-%m-%Y %H:%M')
+	print pushName,formattedDate,':',messageContent,
 	#messageContent=messageContent.decode('utf8')
 	logger(*messageobject)
 	#modules.sender.message_queue(jid,messageContent)
 
 def onGroupMessageReceived(messageId, jid, msgauthor, messageContent, timestamp, wantsReceipt, pushName):
 	messageobject=messageId,jid, msgauthor, messageContent, timestamp, wantsReceipt, pushName
-	print jid,'('+pushName+'): ',messageContent
+	formattedDate = datetime.datetime.fromtimestamp(timestamp).strftime('%d-%m-%Y %H:%M')
+	print jid,'('+pushName,formattedDate+'): ',messageContent
 	if wantsReceipt and bot.sendReceipts:
 		bot.methodsInterface.call("message_ack", (jid, messageId))
 	logger(*messageobject)

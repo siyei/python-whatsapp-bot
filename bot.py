@@ -29,6 +29,7 @@ __license__ = "MIT"
 import argparse, sys, os, csv
 import threading,time, base64
 import logging 
+import json
 
 path = os.path.abspath(os.path.dirname(__file__))
 if not path in sys.path:
@@ -131,6 +132,25 @@ class Bot:
 			if not os.path.isdir(folder):
 				print "missing directory %s. Creating it." % folder
 				modules.misctools.mkdir_p(folder)
+		
+		self.clientsinfofile=os.path.join('configs','clientsinfo')
+		try:
+			with open(self.clientsinfofile,'r') as clientsinfofileobj:
+				self.clientsinfo=json.load(clientsinfofileobj)
+				print "loaded clients",self.clientsinfo
+		except IOError:
+			print "No client registered/talked to yet"
+			self.clientsinfo={}
+		
+		self.adminfile=os.path.join('configs','admin')
+		try:
+			with open(self.adminfile,'r') as adminfileobj:
+				self.admin=json.load(adminfileobj)
+				print "admin is",self.admin
+		except IOError:
+			print "No admin set. please set by saving admin in configs/admin"
+			self.admin="noneset"
+		
 		
 		self.signalsInterface = connectionManager.getSignalsInterface()
 		self.methodsInterface = connectionManager.getMethodsInterface()

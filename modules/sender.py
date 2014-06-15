@@ -44,7 +44,7 @@ def message_queue(recepient, content):
 				recepient,content=x
 				global bot
 				bot.methodsInterface.call("typing_send",(recepient,))
-				time.sleep(0.1)
+				time.sleep(0.5)
 				message_send(recepient,content)
 		outboxprocessing=False
 		return

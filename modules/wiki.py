@@ -1,7 +1,7 @@
 from BeautifulSoup import BeautifulSoup
 import urllib2
 import modules
-
+import time
 import requests 
 
 def feellucky(terms):
@@ -39,11 +39,15 @@ def get_para(wlink):
     return msg
     
 def AI(jid,query,querer,group):
-	query=query[len("wiki "):]
-	result=feellucky(query)
-	if group:
-		result=querer+": \n"+result
-	modules.sender.message_queue(jid,result)
+	time.sleep(0.2)
+	global bot
+	clientinfo=bot.clientsinfo[jid]
+	if clientinfo['okaytotalk']:
+		query=query[len("wiki "):]
+		result=feellucky(query)
+		if group:
+			result=querer+": \n"+result
+		modules.sender.message_queue(jid,result)
 
 def onMessageReceived(messageId, jid, messageContent, timestamp, wantsReceipt, pushName, isBroadcast):
 	if messageContent.lower().startswith("wiki "):

@@ -1,6 +1,7 @@
 import urllib
 import json as m_json
 import modules
+import time
 
 bot=None
 
@@ -28,11 +29,15 @@ def google(terms): # !google <search term>
     return returnval
 
 def AI(jid,query,querer,group):
-	query=query[len("google "):]
-	result=google(query)
-	if group:
-		result=querer+": \n"+result
-	modules.sender.message_queue(jid,result)
+	time.sleep(0.2)
+	global bot
+	clientinfo=bot.clientsinfo[jid]
+	if clientinfo['okaytotalk']:
+		query=query[len("google "):]
+		result=google(query)
+		if group:
+			result=querer+": \n"+result
+		modules.sender.message_queue(jid,result)
 
 def onMessageReceived(messageId, jid, messageContent, timestamp, wantsReceipt, pushName, isBroadcast):
 	if messageContent.lower().startswith("google "):

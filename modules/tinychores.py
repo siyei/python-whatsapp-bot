@@ -12,13 +12,15 @@ def onProfileSetStatusSuccess(jid,messageId):
 	bot.methodsInterface.call("notification_ack",(jid,messageId))
 
 def onMessageDelivered(jid,messageId):
-	print "message delivered %s %s" % (jid,messageId)
+	#print "message delivered %s %s" % (jid,messageId)
+	print "delivered"
 	global bot
 	#bot.methodsInterface.call("delievered_ack",(jid,messageId))
 	bot.methodsInterface.call("message_ack",(jid,messageId))
 
 def onMessageSent(jid,messageId):
-	print "message sent %s %s" % (jid,messageId)
+	#print "sent %s %s" % (jid,messageId)
+	print "sent"
 	global bot
 	#bot.methodsInterface.call("delievered_ack",(jid,messageId))
 	bot.methodsInterface.call("message_ack",(jid,messageId))
@@ -43,6 +45,8 @@ def onGroup_setsubjectsuccess(jid):
 	print "group %s subject set " %jid
 
 def onGroup_subjectreceived(messageId, jid, author, subject, timestamp, receiptRequested):
+	global bot
+	bot.methodsInterface.call("notification_ack",(jid,messageId))
 	print "group %s subject changed to %s by %s" % (jid,subject, author)
 		
 def onGroup_addparticipantssuccess(jid,gjid):

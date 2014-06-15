@@ -1,1 +1,1 @@
-from . import logger, sender, misctools, google, wiki, googleimage, photosender, cli, tinychores, elizaloader
+from . import logger, registration, sender, misctools, google, wiki, googleimage, photosender, cli, tinychores, elizaloader
